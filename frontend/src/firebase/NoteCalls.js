@@ -6,7 +6,6 @@ export const getNotes = () => {
     var notes = [];
     
     db.onSnapshot((snapshot) => {
-        debugger;
         notes = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data()
