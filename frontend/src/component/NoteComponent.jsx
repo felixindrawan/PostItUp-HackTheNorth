@@ -10,7 +10,11 @@ const cardStyle = {
   "margin": "1rem 1rem 1rem 0"
 }
 
-const NoteComponent = ({message, backgroundColor}) => {
+const NoteComponent = ({message, backgroundColor, deleteNote, index}) => {
+  const handleDelete = () => {
+    deleteNote(index)
+  }
+
   return (
   <Card raised={true} style={ {
     "width": "25rem",
@@ -24,7 +28,7 @@ const NoteComponent = ({message, backgroundColor}) => {
           <Typography variant="subtitle1" >{message}</Typography>
         </Grid>
         <Grid item xs={1}>
-          <IconButton children={<DeleteOutlineRoundedIcon />} />
+          <IconButton onClick={handleDelete} children={<DeleteOutlineRoundedIcon />} />
         </ Grid>
     </Grid>
   </ Card>

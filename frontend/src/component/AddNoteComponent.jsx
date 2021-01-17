@@ -15,19 +15,21 @@ const textFieldStyle = {
 }
 
 const InsertCodeComponent = ({ handleAdd }) => {
-  const [currNote, setCurrNote] = useState("")
+  const [currNote, setCurrNote] = useState({id: "", message: ""})
+  const [noteId, setNoteId] = useState(0)
 
   const handleChange = (event) => { 
-    setCurrNote(event.target.value)
+    setCurrNote({id: noteId, message: event.target.value})
   }
 
   const addNote = (event) => {
     console.log(currNote)
-    if (currNote === "" || currNote === null ) return
+    if (currNote.message === "" || currNote.message === null ) return
 
-      handleAdd(currNote)
-      setCurrNote("")
-      event.preventDefault()
+    handleAdd(currNote)
+    setNoteId(noteId+1)
+    setCurrNote({id: noteId, message: ""})
+    event.preventDefault()
   }
 
   return (
@@ -38,7 +40,7 @@ const InsertCodeComponent = ({ handleAdd }) => {
         </Grid>
         <Grid container item direction="row" xs={12}>
           <Grid item xs={11}>
-            <TextField onChange={handleChange} value={currNote} id="courseCodeTextField" variant="outlined" multiline style={textFieldStyle} InputProps={{ style : { fontSize: 15, borderRadius: 6 } }}/>
+            <TextField onChange={handleChange} value={currNote.message} id="courseCodeTextField" variant="outlined" multiline style={textFieldStyle} InputProps={{ style : { fontSize: 15, borderRadius: 6 } }}/>
           </Grid>
           <Grid container item justify="center" alignContent="center" xs={1}>
             <IconButton onClick={addNote} children={<AddRoundedIcon />} />

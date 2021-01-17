@@ -7,7 +7,7 @@ import NoteComponent from "../component/NoteComponent"
 
 // style
 const gridStyle = {
-  padding: "1rem",
+  padding: "1rem",  
 }
 
 const ClassPage = () => {
@@ -21,6 +21,14 @@ const ClassPage = () => {
     })
   }
 
+  const deleteNote = (id) => {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((noteItem, index) => {
+        return index !== id
+      })
+    })
+  }
+
   return (
     <Grid item xs={12} style={pageDefaultStyle}>
       <Grid style={gridStyle}>
@@ -29,7 +37,7 @@ const ClassPage = () => {
         </Grid>
         <Grid container direction="row">
         {notes.map(
-          (note) => (<NoteComponent backgroundColor={backgroundColors[Math.floor(Math.random() * 7)]} message={note} />)
+          (note, index) => (<NoteComponent key={index} index={index} deleteNote={deleteNote} backgroundColor={backgroundColors[Math.floor(Math.random() * 7)]} message={note.message} />)
         )}
         </ Grid>
       </Grid>
