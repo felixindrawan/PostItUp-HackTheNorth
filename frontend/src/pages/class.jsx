@@ -31,9 +31,19 @@ const ClassPage = () => {
       })
   }, [notes, firebase])
 
-  const addNote = (newNote) => {
-    setNotes((prevNotes) => {
-      return [...prevNotes, newNote]
+
+
+  const addNote = (note) => {
+    const Message = note.message;
+
+    firebase
+      .firestore()
+      .collection('Notes')
+      .add({
+        Message
+    })
+    .catch(function(error) {
+        console.error("Error adding note: ", error);
     })
   }
 
