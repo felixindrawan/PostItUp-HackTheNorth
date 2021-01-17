@@ -1,48 +1,44 @@
-import React, { useState, useEffect } from "react";
 import firebase from "./firebase";
 
 const db = firebase.firestore().collection("Notes");
 
-const getNotes = () => {
-    db.onSnapshot((querySnapshot) => {
-        const notes = [];
-        querySnapshot.forEach((note) => {
-            notes.push(note.data());
-        });
+export const getNotes = () => {
+    var notes = [];
+    
+    db.onSnapshot((snapshot) => {
+        debugger;
+        notes = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+        }))
     })
-    .catch(function(error) {
-        console.error("Error adding note: ", error);
-    })
-
+    
     return notes;
 }
 
-const addNote = (note) => {
-    const id = note.id;
-    const content = note.content;
+export const addNote = (note) => {
+    const message = note.message;
 
     db.add({
-        id,
-        content
+        message
     })
     .catch(function(error) {
         console.error("Error deleting note: ", error);
     })
 }
 
-const setNote = (note) => {
+export const setNote = (note) => {
     const documentID = note.target.id;
 
     db.doc(documentID).set({
-        ID: note.id,
-        Content: note.content
+        Message: note.message
     })
     .catch(function(error) {
         console.error("Error writing note: ", error);
     })
 }
 
-const deleteNote = (note) => {
+export const deleteNote = (note) => {
     const documentID = note.target.id;
 
     db.doc(documentID).delete();
