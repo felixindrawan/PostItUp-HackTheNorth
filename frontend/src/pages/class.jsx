@@ -31,12 +31,6 @@ const ClassPage = () => {
       })
   }, [notes, firebase])
 
-  // useEffect(() => {
-  //   const newNotes = getNotes();
-
-  //   setNotes(newNotes);
-  // }, [notes, getNotes])
-
   const addNote = (newNote) => {
     setNotes((prevNotes) => {
       return [...prevNotes, newNote]
