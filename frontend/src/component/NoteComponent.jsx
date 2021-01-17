@@ -10,9 +10,9 @@ const cardStyle = {
   "margin": "1rem 1rem 1rem 0"
 }
 
-const NoteComponent = ({message, backgroundColor, deleteNote, index}) => {
+const NoteComponent = ({message, backgroundColor, deleteNote, id}) => {
   const handleDelete = () => {
-    deleteNote(index)
+    deleteNote(id)
   }
 
   return (

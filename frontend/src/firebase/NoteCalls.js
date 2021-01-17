@@ -22,7 +22,7 @@ export const addNote = (note) => {
         message
     })
     .catch(function(error) {
-        console.error("Error deleting note: ", error);
+        console.error("Error adding note: ", error);
     })
 }
 

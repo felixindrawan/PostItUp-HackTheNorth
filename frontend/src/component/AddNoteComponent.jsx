@@ -29,7 +29,6 @@ const InsertCodeComponent = ({ handleAdd }) => {
     handleAdd(currNote)
     setNoteId(noteId+1)
     setCurrNote({id: noteId, message: ""})
-    event.preventDefault()
   }
 
   return (

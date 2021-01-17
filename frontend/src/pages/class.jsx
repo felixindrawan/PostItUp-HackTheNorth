@@ -12,13 +12,11 @@ const gridStyle = {
   padding: "1rem",  
 }
 
-const ClassPage = () => {
-  const backgroundColors = ["#90F1EF", "#FFD6E0", "#FFEF9F", "#C1FBA4", "#7BF1A8"]
-  
+function useNotes() {
   const [notes, setNotes] = useState([])
 
   useEffect(() => {
-      firebase
+      const unsubscribe = firebase
       .firestore()
       .collection('Notes')
       .onSnapshot((snapshot) => {
@@ -29,18 +27,28 @@ const ClassPage = () => {
 
         setNotes(newNotes);
       })
+
+      return () => unsubscribe();
   }, [notes, firebase])
 
+  return notes;
+}
 
+const ClassPage = () => {
+  const notes = useNotes();
 
   const addNote = (note) => {
+    const backgroundColors = ["#90F1EF", "#FFD6E0", "#FFEF9F", "#C1FBA4", "#7BF1A8"]
+
     const Message = note.message;
+    const Color = backgroundColors[Math.floor(Math.random() * 5)]
 
     firebase
       .firestore()
       .collection('Notes')
       .add({
-        Message
+        Message,
+        Color
     })
     .catch(function(error) {
         console.error("Error adding note: ", error);
@@ -48,11 +56,16 @@ const ClassPage = () => {
   }
 
   const deleteNote = (id) => {
-    setNotes((prevNotes) => {
-      return prevNotes.filter((noteItem, index) => {
-        return index !== id
+    const documentID = id;
+
+    firebase
+      .firestore()
+      .collection('Notes')
+      .doc(documentID)
+      .delete()
+      .catch(function(error) {
+        console.error("Error deleting note: ", error);
       })
-    })
   }
 
   return (
@@ -62,13 +75,13 @@ const ClassPage = () => {
           <AddNoteComponent handleAdd={addNote} />
         </Grid>
         <Grid container direction="row">
-          {notes.map((note, index) => 
+          {notes.map((note) => 
             <div>
               <NoteComponent 
                 key={note.id}
-                index={index}
+                id={note.id}
                 deleteNote={deleteNote}
-                backgroundColor={backgroundColors[Math.floor(Math.random() * 7)]} 
+                backgroundColor={note.Color} 
                 message={note.Message} />
             </div>
           )}
