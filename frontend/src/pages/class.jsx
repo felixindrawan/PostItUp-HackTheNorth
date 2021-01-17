@@ -9,7 +9,7 @@ import firebase from "../firebase/firebase"
 
 // style
 const gridStyle = {
-  padding: "1rem",
+  padding: "1rem",  
 }
 
 const ClassPage = () => {
@@ -33,22 +33,35 @@ const ClassPage = () => {
     })
   }, [notes, db])
 
+  const addNote = (newNote) => {
+    setNotes((prevNotes) => {
+      return [...prevNotes, newNote]
+    })
+  }
+
+  const deleteNote = (id) => {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((noteItem, index) => {
+        return index !== id
+      })
+    })
+  }
+
   return (
     <Grid item xs={12} style={pageDefaultStyle}>
       <Grid style={gridStyle}>
         <Grid container>
-          <AddNoteComponent />
+          <AddNoteComponent handleAdd={addNote} />
         </Grid>
         <Grid container direction="row">
           {notes.map((note, index) => 
-            <NoteComponent key={note.id}
-            backgroundColor={backgroundColors[Math.floor(Math.random() * 7)]} 
-            message={note.message} />
+            <NoteComponent 
+              key={note.id}
+              index={index}
+              deleteNote={deleteNote}
+              backgroundColor={backgroundColors[Math.floor(Math.random() * 7)]} 
+              message={note.message} />
           )}
-
-        {/* {notes.map(
-          (note) => (<NoteComponent backgroundColor={backgroundColors[Math.floor(Math.random() * 7)]} message={note} />)
-        )} */}
         </ Grid>
       </Grid>
     </ Grid>

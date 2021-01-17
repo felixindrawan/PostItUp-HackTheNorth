@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Grid, Typography, Card, TextField, IconButton } from "@material-ui/core"
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
@@ -14,7 +14,24 @@ const textFieldStyle = {
   width: "100%",
 }
 
-const InsertCodeComponent = () => {
+const InsertCodeComponent = ({ handleAdd }) => {
+  const [currNote, setCurrNote] = useState({id: "", message: ""})
+  const [noteId, setNoteId] = useState(0)
+
+  const handleChange = (event) => { 
+    setCurrNote({id: noteId, message: event.target.value})
+  }
+
+  const addNote = (event) => {
+    console.log(currNote)
+    if (currNote.message === "" || currNote.message === null ) return
+
+    handleAdd(currNote)
+    setNoteId(noteId+1)
+    setCurrNote({id: noteId, message: ""})
+    event.preventDefault()
+  }
+
   return (
   <Card raised={true} style={cardStyle}>
     <Grid container item xs={12} justify="center" alignContent="center" direction="row">
@@ -23,10 +40,10 @@ const InsertCodeComponent = () => {
         </Grid>
         <Grid container item direction="row" xs={12}>
           <Grid item xs={11}>
-            <TextField id="courseCodeTextField" variant="outlined" multiline style={textFieldStyle} InputProps={{ style : { fontSize: 15, borderRadius: 6 } }}/>
+            <TextField onChange={handleChange} value={currNote.message} id="courseCodeTextField" variant="outlined" multiline style={textFieldStyle} InputProps={{ style : { fontSize: 15, borderRadius: 6 } }}/>
           </Grid>
           <Grid container item justify="center" alignContent="center" xs={1}>
-            <IconButton children={<AddRoundedIcon />} />
+            <IconButton onClick={addNote} children={<AddRoundedIcon />} />
           </ Grid>
         </ Grid>
     </Grid>
